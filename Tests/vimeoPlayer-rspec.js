@@ -1,5 +1,6 @@
+require('dotenv').config();
 const { Builder, By, Key, until } = require('selenium-webdriver');
-var webdriver = require('selenium-webdriver');
+const webdriver = require('selenium-webdriver');
 const { assert, equal } = require('chai');
 const collectSessionData = require('../Actions/vimeoPlayerActions.js').collectSessionData
 const findStartEvent = require("../Actions/vimeoPlayerActions.js").findStartEvent
@@ -17,7 +18,9 @@ const findLimbikVideoEngagement = require("../Actions/vimeoPlayerActions.js").fi
 const findLimbikVideoProportion = require("../Actions/vimeoPlayerActions.js").findLimbikVideoProportion
 const findBrowserId = require("../Actions/vimeoPlayerActions.js").findBrowserId
 const findDomain = require("../Actions/vimeoPlayerActions.js").findDomain
-
+const findLocalIp = require("../Actions/vimeoPlayerActions.js").findLocalIp
+const findPage = require("../Actions/vimeoPlayerActions.js").findPage
+const findViewerId = require("../Actions/vimeoPlayerActions.js").findViewerId
 
 
 
@@ -41,26 +44,27 @@ describe('Check that trackscipt is recording events on vimeo players', function 
     const driver = new Builder().forBrowser('chrome').build();
 
     const capabilities = {
-        'browserName': 'chrome',
-        // 'device' : 'iPhone 8 Plus',
-        // 'realMobile' : 'true',
-        // 'os_version' : '11',
-        'browserstack.user': 'zach150',
-        'browserstack.key': 'wTxEKhsKZYLGajyRthiN',
+        'browserName' : 'Chrome',
+        'browser_version' : '72',
+        'os' : 'Windows',
+        'os_version' : '10',
+        'resolution' : '1024x768',
+        'browserstack.user': process.env.BROWSERSTACKID,
+        'browserstack.key': process.env.BROWSERSTACKKEY,
         'name': 'Bstack-[Node] Sample Test'
     }
 
 
-    //BrowserStack Driver
+    // BrowserStack Driver
     //    const driver = new webdriver.Builder().
     //      usingServer('http://hub-cloud.browserstack.com/wd/hub').
     //      withCapabilities(capabilities).
     //      build();
 
     it('Should start the video', mochaAsync(async function () {    
-        // await driver.get('https://api.limbikanalytics.com/static/vimeoTracking.html');
-        await driver.get('file:///home/michael/Development/limbik/limbik-trackscript/Examples/vimeoVideoTracking/vimeoTracking.html')
+        await driver.get(process.env.LOCAL)
         await driver.wait(until.elementLocated(By.id('video-1')));
+        // await driver.executeScript('window.LOGGING_LEVEL="testing"')
         await driver.findElement(By.id('test-button')).click()
         await driver.sleep(15000)
 
@@ -143,23 +147,25 @@ describe('Check that trackscipt is recording events on vimeo players', function 
         const videoEngagement = await findLimbikVideoEngagement(EVENTS)
         assert.equal(videoEngagement, true, '== should be true')
     }))
-
     it('Should show on the Limbik-Track script that there is an video-proportion score present', mochaAsync(async function () {    
-
         const limbikVideoProportion = await findLimbikVideoProportion(EVENTS)
         assert.equal(limbikVideoProportion, true, '== should be true')
     }))
-
     it('Should show on the Limbik-Track script that there browser id in the metadata', mochaAsync(async function () {    
-
         const browserId = await findBrowserId(EVENTS)
         assert.equal(browserId, true, '== should be true')
     }))
-
-    it('Should show on the Limbik-Track script that there is domain present in the metadata', mochaAsync(async function () {    
-
-        const domainName = await findDomain(EVENTS)
-        assert.equal(domainName, true, '== should be true')
+    it('Should show on the Limbik-Track script that there is local IP present in the metadata', mochaAsync(async function () {    
+        const ipAdress = await findLocalIp(EVENTS)
+        assert.equal(ipAdress, true, '== should be true')
+    }))
+    it('Should show on the Limbik-Track script that there is page present in the metadata', mochaAsync(async function () {    
+        const page = await findPage(EVENTS)
+        assert.equal(page, true, '== should be true')
+    }))
+    it('Should show on the Limbik-Track script that there is viewerID present in the metadata', mochaAsync(async function () {    
+        const viewerId = await findViewerId(EVENTS)
+        assert.equal(viewerId, true, '== should be true')
     }))
 
     after(async () => driver.quit());

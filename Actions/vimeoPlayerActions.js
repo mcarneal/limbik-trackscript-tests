@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const collectSessionData =(storage)=> {
     const events = []
     Object.keys(storage).map((testNumber) => {
@@ -13,8 +15,8 @@ module.exports.collectSessionData = collectSessionData
 const findStartEvent = (events) => {
     let results;
     for(let i = 0 ; events.length > i ; i++) {
-        if(events[i]['video_interaction_development'] && events[i]['video_interaction_development'].Event.eventType === 'started'){
-            results = events[i]['video_interaction_development'].Event.eventType
+        if(events[i][`video_interaction_${process.env.NODE_ENV}`] && events[i][`video_interaction_${process.env.NODE_ENV}`].Event.eventType === 'started'){
+            results = events[i][`video_interaction_${process.env.NODE_ENV}`].Event.eventType
             break    
         }
         else{
@@ -28,8 +30,8 @@ module.exports.findStartEvent = findStartEvent
 const findPlayEvent = (events) => {
     let result;
     for (i = 0 ; events.length > i ; i ++) {
-       if (events[i]['video_playing_development']){
-            result = events[i]['video_playing_development'].Event.eventType
+       if (events[i][`video_playing_${process.env.NODE_ENV}`]){
+            result = events[i][`video_playing_${process.env.NODE_ENV}`].Event.eventType
             break
        }
        else {
@@ -43,8 +45,8 @@ module.exports.findPlayEvent = findPlayEvent
 const findPauseEvent = (events) => {
     let results;
     for(i = 0 ; events.length > i ; i++){
-        if(events[i]['video_interaction_development'] && events[i]['video_interaction_development'].Event.eventType === 'paused'){
-            results = events[i]['video_interaction_development'].Event.eventType
+        if(events[i][`video_interaction_${process.env.NODE_ENV}`] && events[i][`video_interaction_${process.env.NODE_ENV}`].Event.eventType === 'paused'){
+            results = events[i][`video_interaction_${process.env.NODE_ENV}`].Event.eventType
             break    
         }
         else{
@@ -58,8 +60,8 @@ module.exports.findPauseEvent = findPauseEvent
 const find25PercentPlayback = (events) => {
     let result;
     for (let i = 0 ; events.length > i ; i++) {
-        if (events[i]['video_interaction_development'] && events[i]['video_interaction_development'].Event.eventType === '25percent') {
-            results = events[i]['video_interaction_development'].Event.eventType
+        if (events[i][`video_interaction_${process.env.NODE_ENV}`] && events[i][`video_interaction_${process.env.NODE_ENV}`].Event.eventType === '25percent') {
+            results = events[i][`video_interaction_${process.env.NODE_ENV}`].Event.eventType
             break
         }
         else {
@@ -74,8 +76,8 @@ module.exports.find25PercentPlayback = find25PercentPlayback
 const find50PercentPlayback = (events) => {
     let result;
     for (let i = 0 ; events.length > i ; i++) {
-        if (events[i]['video_interaction_development'] && events[i]['video_interaction_development'].Event.eventType === '50percent') {
-            results = events[i]['video_interaction_development'].Event.eventType
+        if (events[i][`video_interaction_${process.env.NODE_ENV}`] && events[i][`video_interaction_${process.env.NODE_ENV}`].Event.eventType === '50percent') {
+            results = events[i][`video_interaction_${process.env.NODE_ENV}`].Event.eventType
             break
         }
         else {
@@ -90,8 +92,8 @@ module.exports.find50PercentPlayback = find50PercentPlayback
 const find75PercentPlayback = (events) => {
     let result;
     for (let i = 0 ; events.length > i ; i++) {
-        if (events[i]['video_interaction_development'] && events[i]['video_interaction_development'].Event.eventType === '75percent') {
-            results = events[i]['video_interaction_development'].Event.eventType
+        if (events[i][`video_interaction_${process.env.NODE_ENV}`] && events[i][`video_interaction_${process.env.NODE_ENV}`].Event.eventType === '75percent') {
+            results = events[i][`video_interaction_${process.env.NODE_ENV}`].Event.eventType
             break
         }
         else {
@@ -106,7 +108,7 @@ module.exports.find75PercentPlayback = find75PercentPlayback
 const findLimbikAttentionScore = (events) => {
     let results;
     for (let i = 0 ; events.length > i ; i++) {
-        if (events[i]['video_interaction_development'] && events[i]['video_interaction_development'].Event.limbik.attentionScore) {
+        if (events[i][`video_interaction_${process.env.NODE_ENV}`] && events[i][`video_interaction_${process.env.NODE_ENV}`].Event.limbik.attentionScore) {
             results = true
             break
         }
@@ -122,7 +124,7 @@ module.exports.findLimbikAttentionScore = findLimbikAttentionScore
 const findLimbikAudioEngagement = (events) => {
     let results;
     for (let i = 0 ; events.length > i ; i++) {
-        if (events[i]['video_interaction_development'] && events[i]['video_interaction_development'].Event.limbik['audio-engagement']) {
+        if (events[i][`video_interaction_${process.env.NODE_ENV}`] && events[i][`video_interaction_${process.env.NODE_ENV}`].Event.limbik['audio-engagement']) {
             results = true
             break
         }
@@ -138,8 +140,8 @@ module.exports.findLimbikAudioEngagement = findLimbikAudioEngagement
 const findMuteStatus = (events) => {
     let results;
     for(let i = 0 ; events.length > i ; i++) {
-        if(events[i]['video_interaction_development'] && events[i]['video_interaction_development'].Event.player['is-muted'] === true){
-            results = events[i]['video_interaction_development'].Event.player['is-muted']
+        if(events[i][`video_interaction_${process.env.NODE_ENV}`] && events[i][`video_interaction_${process.env.NODE_ENV}`].Event.player['is-muted'] === true){
+            results = events[i][`video_interaction_${process.env.NODE_ENV}`].Event.player['is-muted']
             break    
         }
         else{
@@ -154,12 +156,12 @@ module.exports.findMuteStatus = findMuteStatus
 const detectVideoType = (events) => {
     let results;
     for (let i = 0 ; events.length > i ; i++) {
-        if (events[i]['video_interaction_development'].Event.video.type === 'vimeo') {
-            results = events[i]['video_interaction_development'].Event.video.type
+        if (events[i][`video_interaction_${process.env.NODE_ENV}`].Event.video.type === 'vimeo') {
+            results = events[i][`video_interaction_${process.env.NODE_ENV}`].Event.video.type
             break
         }
         else {
-            results = events[i]['video_interaction_development'].Event.video.type
+            results = events[i][`video_interaction_${process.env.NODE_ENV}`].Event.video.type
         }
     }
     return results 
@@ -170,7 +172,7 @@ module.exports.detectVideoType = detectVideoType
 const findLimbikRating = (events) => {
     let results;
     for (let i = 0 ; events.length > i ; i++) {
-        if (events[i]['video_interaction_development'] && events[i]['video_interaction_development'].Event.limbik['rating']) {
+        if (events[i][`video_interaction_${process.env.NODE_ENV}`] && events[i][`video_interaction_${process.env.NODE_ENV}`].Event.limbik['rating']) {
             results = true
             break
         }
@@ -186,7 +188,7 @@ module.exports.findLimbikRating = findLimbikRating
 const findLimbikVideoEngagement = (events) => {
     let results;
     for (let i = 0 ; events.length > i ; i++) {
-        if (events[i]['video_interaction_development'] && events[i]['video_interaction_development'].Event.limbik['video-engagement']) {
+        if (events[i][`video_interaction_${process.env.NODE_ENV}`] && events[i][`video_interaction_${process.env.NODE_ENV}`].Event.limbik['video-engagement']) {
             results = true
             break
         }
@@ -202,7 +204,7 @@ module.exports.findLimbikVideoEngagement = findLimbikVideoEngagement
 const findLimbikVideoProportion = (events) => {
     let results;
     for (let i = 0 ; events.length > i ; i++) {
-        if (events[i]['video_interaction_development'] && events[i]['video_interaction_development'].Event.limbik['video-proportion']) {
+        if (events[i][`video_interaction_${process.env.NODE_ENV}`] && events[i][`video_interaction_${process.env.NODE_ENV}`].Event.limbik['video-proportion']) {
             results = true
             break
         }
@@ -218,7 +220,7 @@ module.exports.findLimbikVideoProportion = findLimbikVideoProportion
 const findBrowserId = (events) => {
     let results;
     for (let i = 0 ; events.length > i ; i++) {
-        if (events[i]['video_interaction_development'] && events[i]['video_interaction_development'].Event.metaData['browserId']) {
+        if (events[i][`video_interaction_${process.env.NODE_ENV}`] && events[i][`video_interaction_${process.env.NODE_ENV}`].Event.metaData['browserId']) {
             results = true
             break
         }
@@ -234,8 +236,8 @@ module.exports.findBrowserId = findBrowserId
 const findDomain = (events) => {
     let results;
     for (let i = 0 ; events.length > i ; i++) {
-        if (events[i]['video_interaction_development'] && events[i]['video_interaction_development']["Event"] && events[i]['video_interaction_development']["Event"]["metaData"]) {
-            events[i]['video_interaction_development']["Event"]["metaData"]["domain"].length > 1 ? results = true : results = false
+        if (events[i][`video_interaction_${process.env.NODE_ENV}`] && events[i][`video_interaction_${process.env.NODE_ENV}`]["Event"] && events[i][`video_interaction_${process.env.NODE_ENV}`]["Event"]["metaData"]) {
+            events[i][`video_interaction_${process.env.NODE_ENV}`]["Event"]["metaData"]["domain"].length > 1 ? results = true : results = events[i][`video_interaction_${process.env.NODE_ENV}`]["Event"]["metaData"]["domain"]
             break
         }
         else {
@@ -246,3 +248,50 @@ const findDomain = (events) => {
 }
 
 module.exports.findDomain = findDomain
+
+const findLocalIp = (events) => {
+    let results;
+    for (let i = 0 ; events.length > i ; i++) {
+        if (events[i][`video_interaction_${process.env.NODE_ENV}`] && events[i][`video_interaction_${process.env.NODE_ENV}`]["Event"]['metaData']["local-ip-address"]) {
+            results = true
+            break
+        }
+        else {
+            reuslts = false
+        }
+    }
+    return results
+}
+
+module.exports.findLocalIp = findLocalIp
+
+const findPage = (events) => {
+    let results;
+    for (let i = 0 ; events.length > i ; i++) {
+        if (events[i][`video_interaction_${process.env.NODE_ENV}`] && events[i][`video_interaction_${process.env.NODE_ENV}`]["Event"]['metaData']["page"]) {
+            results = true
+            break
+        }
+        else {
+            reuslts = false
+        }
+    }
+    return results
+}
+
+module.exports.findPage = findPage
+
+const findViewerId = (events) => {
+    let results;
+    for (let i = 0 ; events.length > i ; i++) {
+        if (events[i][`video_interaction_${process.env.NODE_ENV}`] && events[i][`video_interaction_${process.env.NODE_ENV}`]["Event"]['metaData']["viewerId"]) {
+            results = true
+            break
+        }
+        else {
+            reuslts = false
+        }
+    }
+    return results
+}
+module.exports.findViewerId = findViewerId

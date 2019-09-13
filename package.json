@@ -4,11 +4,12 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "mocha Tests/vimeoPlayer-rspec.js --timeout 50000 "
+    "test": "mocha Tests/vimeoPlayer-rspec.js --timeout 20000 "
   },
   "dependencies": {
     "chai": "^4.2.0",
     "chromedriver": "^76.0.1",
+    "dotenv": "^8.1.0",
     "mocha": "^6.2.0",
     "selenium-webdriver": "^4.0.0-alpha.5"
   }
