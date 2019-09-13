@@ -1,0 +1,166 @@
+const { Builder, By, Key, until } = require('selenium-webdriver');
+var webdriver = require('selenium-webdriver');
+const { assert, equal } = require('chai');
+const collectSessionData = require('../Actions/vimeoPlayerActions.js').collectSessionData
+const findStartEvent = require("../Actions/vimeoPlayerActions.js").findStartEvent
+const findMuteStatus = require("../Actions/vimeoPlayerActions.js").findMuteStatus
+const detectVideoType = require("../Actions/vimeoPlayerActions.js").detectVideoType
+const findPlayEvent = require("../Actions/vimeoPlayerActions.js").findPlayEvent
+const findPauseEvent = require("../Actions/vimeoPlayerActions.js").findPauseEvent
+const find25PercentPlayback = require("../Actions/vimeoPlayerActions.js").find25PercentPlayback
+const find50PercentPlayback = require("../Actions/vimeoPlayerActions.js").find50PercentPlayback
+const find75PercentPlayback = require("../Actions/vimeoPlayerActions.js").find75PercentPlayback
+const findLimbikAttentionScore = require("../Actions/vimeoPlayerActions.js").findLimbikAttentionScore
+const findLimbikRating = require("../Actions/vimeoPlayerActions.js").findLimbikRating
+const findLimbikAudioEngagement = require("../Actions/vimeoPlayerActions.js").findLimbikAudioEngagement
+const findLimbikVideoEngagement = require("../Actions/vimeoPlayerActions.js").findLimbikVideoEngagement
+const findLimbikVideoProportion = require("../Actions/vimeoPlayerActions.js").findLimbikVideoProportion
+const findBrowserId = require("../Actions/vimeoPlayerActions.js").findBrowserId
+const findDomain = require("../Actions/vimeoPlayerActions.js").findDomain
+
+
+
+
+let STORGAE;
+let EVENTS;
+
+
+
+describe('Check that trackscipt is recording events on vimeo players', function () {
+
+    const mochaAsync = (fn) => {
+        return (done) => {
+            fn.call().then(done, (err) => {
+                console.log(err)
+                done(err)
+            });
+        };
+    };
+
+    // local driver
+    const driver = new Builder().forBrowser('chrome').build();
+
+    const capabilities = {
+        'browserName': 'chrome',
+        // 'device' : 'iPhone 8 Plus',
+        // 'realMobile' : 'true',
+        // 'os_version' : '11',
+        'browserstack.user': 'zach150',
+        'browserstack.key': 'wTxEKhsKZYLGajyRthiN',
+        'name': 'Bstack-[Node] Sample Test'
+    }
+
+
+    //BrowserStack Driver
+    //    const driver = new webdriver.Builder().
+    //      usingServer('http://hub-cloud.browserstack.com/wd/hub').
+    //      withCapabilities(capabilities).
+    //      build();
+
+    it('Should start the video', mochaAsync(async function () {    
+        // await driver.get('https://api.limbikanalytics.com/static/vimeoTracking.html');
+        await driver.get('file:///home/michael/Development/limbik/limbik-trackscript/Examples/vimeoVideoTracking/vimeoTracking.html')
+        await driver.wait(until.elementLocated(By.id('video-1')));
+        await driver.findElement(By.id('test-button')).click()
+        await driver.sleep(15000)
+
+    }))
+    it('Should grab the session storage data', mochaAsync(async function () {    
+        STORAGE = await driver.executeScript('return sessionStorage')
+        EVENTS = await collectSessionData(STORAGE)
+    }))
+
+    it('Should detect that the video type is vimeo', mochaAsync(async function () {
+        const videoType = detectVideoType(EVENTS)    
+        assert.equal(videoType, 'vimeo', '== should be vimeo')
+    }))
+
+
+    it('Should show on the Limbik-Track server that the video has started', mochaAsync(async function () {    
+ 
+        const hasStarted = await findStartEvent(EVENTS)
+        assert.equal(hasStarted, 'started', '== should be started')
+     
+
+    }))
+
+    it('Should show on the Limbik-Track server that the video is playing', mochaAsync(async function () {    
+        const hasPlayed = await findPlayEvent(EVENTS)
+        assert.equal(hasPlayed, 'playing', '== should be playing')
+     
+    }))
+    
+    it('Should show on the Limbik-Track server that the video has paused', mochaAsync(async function () {    
+   
+        const hasPaused = await findPauseEvent(EVENTS)
+        assert.equal(hasPaused, 'paused', '== should be paused')
+    })) 
+
+    it('Should show on the Limbik-Track server that the video has jumped to 25%', mochaAsync(async function () {    
+
+        const percentPlayed = await find25PercentPlayback(EVENTS)
+        assert.equal(percentPlayed, '25percent', '== should be 25percent')
+    }))
+
+    it('Should show on the Limbik-Track server that the video has jumped to 50%', mochaAsync(async function () {    
+
+        const percentPlayed = await find50PercentPlayback(EVENTS)
+        assert.equal(percentPlayed, '50percent', '== should be 50percent')
+    }))
+
+    it('Should show on the Limbik-Track server that the video has jumped to 75%', mochaAsync(async function () {    
+
+        const percentPlayed = await find75PercentPlayback(EVENTS)
+        assert.equal(percentPlayed, '75percent', '== should be 75percent')
+    }))
+
+    it('Should show on the Limbik-Track server that the video has muted', mochaAsync(async function () {    
+        
+        const hasMuted = await findMuteStatus(EVENTS)
+        assert.equal(hasMuted, true, '== should be true')
+    }))
+
+    it('Should show on the Limbik-Track script that there is an attention score present', mochaAsync(async function () {    
+        
+        const attentionScore = await findLimbikAttentionScore(EVENTS)
+        assert.equal(attentionScore, true, '== should be true')
+    }))
+
+    it('Should show on the Limbik-Track script that there is an audio engament score present', mochaAsync(async function () {    
+
+        const audioEngagement = await findLimbikAudioEngagement(EVENTS)
+        assert.equal(audioEngagement, true, '== should be true')
+    }))
+
+    it('Should show on the Limbik-Track script that there is an rating score present', mochaAsync(async function () {    
+        
+        const rating = await findLimbikRating(EVENTS)
+        assert.equal(rating, true, '== should be true')
+    }))
+
+    it('Should show on the Limbik-Track script that there is an limbik video engagement score present', mochaAsync(async function () {    
+
+        const videoEngagement = await findLimbikVideoEngagement(EVENTS)
+        assert.equal(videoEngagement, true, '== should be true')
+    }))
+
+    it('Should show on the Limbik-Track script that there is an video-proportion score present', mochaAsync(async function () {    
+
+        const limbikVideoProportion = await findLimbikVideoProportion(EVENTS)
+        assert.equal(limbikVideoProportion, true, '== should be true')
+    }))
+
+    it('Should show on the Limbik-Track script that there browser id in the metadata', mochaAsync(async function () {    
+
+        const browserId = await findBrowserId(EVENTS)
+        assert.equal(browserId, true, '== should be true')
+    }))
+
+    it('Should show on the Limbik-Track script that there is domain present in the metadata', mochaAsync(async function () {    
+
+        const domainName = await findDomain(EVENTS)
+        assert.equal(domainName, true, '== should be true')
+    }))
+
+    after(async () => driver.quit());
+});
