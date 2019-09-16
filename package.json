@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "mocha Tests/vimeoPlayer-rspec.js --timeout 20000 "
+    "test": "mocha Tests/vimeoPlayer-rspec.js --timeout 40000 "
   },
   "dependencies": {
     "chai": "^4.2.0",
