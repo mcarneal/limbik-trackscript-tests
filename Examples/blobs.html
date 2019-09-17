@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blobs Blobs Blobs</title>
+</head>
+<body>
+<input type="file" allow="video/*"  />
+<script>
+    const input = document.querySelector('input')
+
+    input.addEventListener('change', e => {
+        const video = document.createElement('video')
+        const imageBlob = URL.createObjectURL(input.files[0])
+        console.log(imageBlob)
+        video.src = imageBlob
+
+        // img.onload = function() {
+        //     URL.revokeObjectURL(imageBlob)
+        // }
+
+        input.parentNode.replaceChild(video, input)
+        video.play()
+    })
+</script>
+
+</body>
+</html>

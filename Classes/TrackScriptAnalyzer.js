@@ -4,7 +4,6 @@ require('dotenv').config();
 module.exports = class TrackScriptAnalyzer {
 
     static collectSessionData(storage){
-        console.log('logging storage',storage)
         const events = []
         storage.forEach((event) => {
             events.push(JSON.parse(event))
@@ -143,10 +142,10 @@ module.exports = class TrackScriptAnalyzer {
         return results
     }
 
-    static detectVideoType(events) {
+    static detectVideoType(events, type) {
         let results;
         for (let i = 0 ; events.length > i ; i++) {
-            if (events[i][`video_interaction_${process.env.NODE_ENV}`].Event.video.type === 'vimeo') {
+            if (events[i][`video_interaction_${process.env.NODE_ENV}`].Event.video.type === type) {
                 results = events[i][`video_interaction_${process.env.NODE_ENV}`].Event.video.type
                 break
             }

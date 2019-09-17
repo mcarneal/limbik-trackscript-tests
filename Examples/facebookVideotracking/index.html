@@ -1,0 +1,107 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://localhost:8081/static/limbik-video.js" type="module" data-accountId="-KhOi9H4R2MOgdLbQD5T" async></script>
+</head>
+<body>
+  <div id="fb-root"></div>
+  <script>
+  /*
+    Learn more about the Facebook Video Player API here:
+    https://developers.facebook.com/docs/plugins/embedded-video-player/api#control-reference
+
+    Learn more about keen-tracking.js here:
+    https://github.com/keen/keen-tracking.js
+  */
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId: 'YOUR_FB_APP_ID',
+      xfbml: true,
+      version: 'v4.0'
+    });
+
+    // FB.Event.subscribe('xfbml.ready', function(msg) {
+    //   if (msg.type === 'video' ) {
+    //       console.log('what is this ',msg)
+    //
+    //       trackEvents(msg.instance);
+    //   }
+    // });
+  };
+
+  function trackEvents(player) {
+    // var client = new Keen({
+    //   projectId: 'YOUR_KEEN_PROJECT_ID',
+    //   writeKey: 'YOUR_KEEN_WRITE_KEY'
+    // });
+
+    // These flags can help with local development
+    //Keen.debug = true;
+    // Keen.enabled = false;
+    //client.on('recordEvent', console.log);
+
+    // client.extendEvents(function(){
+    //     console.log('what is this ',player.getDuration())
+    //
+    //     return {
+    //     browser: Keen.helpers.getBrowserProfile(),
+    //     player: {
+    //       'is-muted'         : player.isMuted(),
+    //       'current-position' : player.getCurrentPosition(),
+    //       'duration'         : player.getDuration(),
+    //       'volume'           : player.getVolume()
+    //     }
+    //   }
+    // })
+
+    player.subscribe('startedPlaying', function(e) {
+     // client.recordEvent('video-interaction', { event_type: 'started' });
+    });
+
+    player.subscribe('paused', function(e) {
+     // client.recordEvent('video-interaction', { event_type: 'paused' });
+    });
+
+    player.subscribe('finishedPlaying', function(e) {
+     // client.recordEvent('video-interaction', { event_type: 'finished' });
+    });
+
+    player.subscribe('startedBuffering', function(e) {
+     // client.recordEvent('video-interaction', { event_type: 'started-buffering' });
+    });
+
+    player.subscribe('finishedBuffering', function(e) {
+      //client.recordEvent('video-interaction', { event_type: 'finished-buffering' });
+    });
+
+    player.subscribe('error', function(e) {
+     // client.recordEvent('video-interaction', { event_type: 'error' });
+    });
+  }
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+  </script>
+
+<!-- Your embedded video player code -->
+  <div class="fb-video"
+       data-width="500"
+       data-href="https://www.facebook.com/WeRateDogs/videos/1134644986596723/"
+       data-allowfullscreen="true"></div>
+  <div class="fb-video"
+       id="bob"
+       data-href="https://www.facebook.com/OutdoorHub/videos/1338121966253759/"
+       data-width="500"
+       data-allowfullscreen="true"></div>
+  <div class="fb-video"
+       data-href="https://www.facebook.com/Thrillist/videos/10155121564420891/"
+       data-width="500"
+       data-allowfullscreen="true"></div>
+<!--  <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Ffacebook%2Fvideos%2F10153231379946729%2F&width=500&show_text=false&height=280&appId" width="500" height="280" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media" allowFullScreen="true"></iframe>-->
+</body>
+</html>

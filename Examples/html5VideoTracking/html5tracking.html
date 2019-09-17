@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML 5 Videos</title>
+</head>
+<body>
+    <script src="./playBackScript.js" type="text/javascript"></script>
+<video controls>
+    <source src="https://mdn.github.io/learning-area/javascript/apis/video-audio/finished/video/sintel-short.mp4" type="video/mp4">
+    <p>Your browser doesn't support HTML5 video. Here is a <a href="rabbit320.mp4">link to the video</a> instead.</p>
+</video>
+<video controls
+       src="https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4"
+       poster="https://peach.blender.org/wp-content/uploads/title_anouncement.jpg?x11217"
+       width="620">
+
+    Sorry, your browser doesn't support embedded videos,
+    but don't worry, you can <a href="https://archive.org/details/BigBuckBunny_124">download it</a>
+    and watch it with your favorite video player!
+
+</video>
+<video autoplay controls id="Player" src="http://www.w3schools.com/html/movie.mp4" onclick="this.paused ? this.play() : this.pause();">Your browser does not support the video tag.</video>
+
+<script>
+    var nextsrc = ["http://www.w3schools.com/html/movie.mp4","http://www.w3schools.com/html/mov_bbb.mp4"];
+    var elm = 0; var Player = document.getElementById('Player');
+    Player.onended = function(){
+        if(++elm < nextsrc.length){
+            Player.src = nextsrc[elm]; Player.play();
+        }
+    }
+</script>
+-<script src="https://localhost:8081/static/limbik-video.js" type="module" data-accountId="-KhOi9H4R2MOgdLbQD5T" async></script>
+</body>
+</html>
